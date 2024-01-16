@@ -1,0 +1,54 @@
+{% extends 'clients/base.html' %}
+	
+{% block content %}
+
+{% load get_group %}
+
+<div class="container">
+
+	<div class="row">
+		<div class="col bg-light p-4 m-1 rounded" >
+			<h3 class="p-2 m-2">My transaction history</h3>
+			
+			<table>
+			<tr>
+				<th>transaction time</th>
+				<th>price</th>
+				<th>product</td>
+			</tr>
+			{% for transaction in transactions %}
+			<tr>
+				<td>{{ transaction.transaction_time }}</td>
+				<td>{{ transaction.price }}</td>
+				<td>{{ transaction.product_fk.description }}</td>
+			</tr>
+			{% endfor %}
+			</table>
+
+
+		</div>
+	
+		<div class="col bg-light p-4 m-1 rounded">
+			<h3 class="p-2 m-2">My cards</h3>
+			
+			<table>
+				<tr>
+					<th>id</th>
+					<th>active</th>
+					<th>funds</td>
+				</tr>
+				{% for card in cards %}
+				<tr>
+					<td>{{ card.id }}</td>
+					<td>{{ card.active }}</td>
+					<td>{{ card.funds }}</td>
+				</tr>
+				{% endfor %}
+				</table>
+			
+		</div>
+	</div>
+</div>
+
+
+{% endblock content %}
