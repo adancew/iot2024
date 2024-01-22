@@ -41,12 +41,12 @@ def sign_out(request):
 
 @login_required
 def dash(request):
-    if request.user.groups.filter(name="Owners").exists():
-        return render(request,'clients/owner_dash.html',{})
-    elif request.user.groups.filter(name="Clients").exists():
+    if request.user.is_staff:
+        return render(request, 'clients/owner_dash.html', {})
+    elif request.user.is_authenticated:
         user_cards = Card.objects.filter(user_fk=request.user.id)
-        user_transactions =  Transaction.objects.filter(user_fk=request.user.id)
-        context = {"transactions":user_transactions, "cards": user_cards}
-        return render(request,'clients/user_dash.html',context)
+        user_transactions = Transaction.objects.filter(user_fk=request.user.id)
+        context = {"transactions": user_transactions, "cards": user_cards}
+        return render(request, 'clients/user_dash.html', context)
     else:
-        return render(request,'clients/empty_dash.html',{})
+        return render(request, 'clients/empty_dash.html', {})
