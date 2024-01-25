@@ -52,3 +52,6 @@ class Storage:
 
     def products_list(self) -> list[tuple[Product, int]]:
         return [(self.products[prod_id], slot) for slot, (prod_id, qty) in self.slots.items() if qty > 0]
+
+    def product_name(self, prod_id: int) -> Optional[str]:
+        return self.products[prod_id].name if prod_id in self.products else None

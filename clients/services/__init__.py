@@ -24,6 +24,5 @@ def run():
     ProductService(comm)
     storage_srv = StorageService(comm)
     comm.transactions = TransactionService(comm, storage_srv)
-    
 
     client.loop_start()

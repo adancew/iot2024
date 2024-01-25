@@ -17,7 +17,6 @@ class StorageService:
         post_delete.connect(self.on_slot_delete, Slot, weak=False)
 
     def on_slot_change(self, instance: Slot, **_kwargs):
-        print('NAME')
         self.mqtt.storage_change(instance.vmachine_fk.identifier, instance.id, instance.slot_number,
                                  instance.product_fk.id, instance.amount)
 
@@ -28,11 +27,10 @@ class StorageService:
     @staticmethod
     def perform_transaction(machine_id: str, slot_nr: int, product_id: int, qty: int = 1) -> bool:
         slot = Slot.objects.get(vmachine_fk__identifier=machine_id, slot_number=slot_nr)
-        if slot and slot.product_fk.id == product_id:
+        if slot and slot.product_fk.id == product_id and slot.amount >= 1:
+            # slot.save()
             slot.amount -= qty
-            if slot.amount >= 0:
-                slot.save()
-                return True
+            return True
         return False
 
     @staticmethod

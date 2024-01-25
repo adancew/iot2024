@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 from pathlib import Path
 
+DEPLOY = False
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -27,7 +29,8 @@ SECRET_KEY = 'django-insecure-o_0idn@nhyl+f%#c6#)o)^0g=nyd*ypv(a54g*^=i&!316ryc*
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    '10.108.33.110'
+    '10.108.33.110',
+    'localhost',
 ]
 
 # Application definition
@@ -128,4 +131,7 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-BROKER_IP = '10.108.33.125'
+if DEPLOY:
+    BROKER_IP = '10.108.33.125'
+else:
+    BROKER_IP = 'localhost'

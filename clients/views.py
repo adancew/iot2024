@@ -42,7 +42,7 @@ def sign_out(request):
 @login_required
 def dash(request):
     if request.user.is_staff:
-        return render(request, 'clients/owner_dash.html', {})
+        return redirect('/admin')
     elif request.user.is_authenticated:
         user_cards = Card.objects.filter(user_fk=request.user.id)
         user_transactions = Transaction.objects.filter(user_fk=request.user.id)

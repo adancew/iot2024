@@ -1,3 +1,5 @@
+import logging
+
 from paho.mqtt import client as mqtt
 
 from .transaction import TransactionService
@@ -10,22 +12,20 @@ class MQTTCommunicator:
 
     def __init__(self, client):
         self.client = client
+        self.logger = logging.getLogger(__name__)
         client.on_message = self.on_message
         client.on_connect = self.on_connect
-        print("INIT")
 
     def on_message(self, _client, _userdata, msg):
-        print("Message")
         self.handle_message(msg)
 
     @staticmethod
     def on_connect(client, _userdata, _flags, _rc):
-        print('Subscribe')
         client.subscribe('transaction/#')
         client.subscribe('balance-request/#')
 
     def handle_message(self, msg):
-        print(msg.topic)
+        self.logger.info(f'MQTT message received: {msg.topic} -- {msg.payload}')
         if msg.topic.startswith('transaction/'):
             try:
                 machine_id, card = msg.topic.removeprefix('transaction/').split('/')
@@ -38,7 +38,7 @@ class MQTTCommunicator:
             else:
                 self.transactions.perform_transaction(machine_id, card, slot_nr, prod_id, timestamp)
         elif msg.topic.startswith('balance-request/'):
-            card = msg.topic.removeprefix('balance-request')
+            card = msg.topic.removeprefix('balance-request/')
             self.transactions.request_balance(card)
 
     def storage_change(self, machine: str, slot_id: int, slot: int, prod_id: int, qty: int):
@@ -48,7 +48,7 @@ class MQTTCommunicator:
         self.client.publish(f'products/{prod_id}', f'{name};{price:.2f}'.encode('utf-8'))
 
     def transaction_result(self, machine_id: str, card_nr: str, result: Result):
-        self.client.publish(f'transaction-result/{machine_id}/{card_nr}', str(result).encode('utf-8'))
+        self.client.publish(f'transaction-result/{machine_id}/{card_nr}', str(result.value).encode('utf-8'))
 
     def balance(self, card_nr: str, result: Result, balance: float = 0.0):
-        self.client.publish(f'balance/{card_nr}', f'{result};{balance:.2f}'.encode('utf-8'))
+        self.client.publish(f'balance/{card_nr}', f'{result.value};{balance:.2f}'.encode('utf-8'))

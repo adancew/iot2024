@@ -1,22 +1,13 @@
-from enum import Enum
 from typing import TYPE_CHECKING, Optional
 
-from storage import Storage, Product
 from gui import Menu, BalanceRead, PurchaseRequest
+from storage import Storage, Product
+from utils import Result
 
 if TYPE_CHECKING:
     from mqtt import MQTTCommunicator
     
 
-
-class Result(Enum):
-    OK = 0
-    NOT_ENOUGH_MONEY = 1
-    NOT_ENOUGH_PRODUCTS = 2
-    NOT_ACTIVE_CARD = 3
-    UNKNOWN_PRODUCT = 4
-    UNKNOWN_CARD = 5
-    UNKNOWN_ERROR = 6
 
 
 class TransactionManager:
@@ -30,18 +21,17 @@ class TransactionManager:
     def __init__(self, storage):
         self.storage = storage
 
-    def request_balance(self, card: str):
-        print('balance')
+    def request_balance(self, card: str, time: int):
         self.card = card
-        self.mqtt.balance_request(card)
+        self.mqtt.balance_request(card, time)
 
     def start_transaction(self, slot: int, product: Product):
         self.slot = slot
         self.product = product
 
-    def commit_transaction(self, card: str):
+    def commit_transaction(self, card: str, time: int):
         self.card = card
-        self.mqtt.transaction_commit(card, self.slot, self.product.prod_id)
+        self.mqtt.transaction_commit(card, self.slot, self.product.prod_id, time)
 
     def cancel_transaction(self):
         self.card = None
@@ -53,7 +43,7 @@ class TransactionManager:
             return
         self.card = None
         if isinstance(self.menu.state, BalanceRead):
-            self.menu.state.balance(balance)
+            self.menu.state.balance(balance, result)
 
     def process_transaction_result(self, card: str, result: Result):
         if card != self.card:
@@ -62,6 +52,6 @@ class TransactionManager:
         if result == Result.OK:
             self.storage.perform_transaction(self.slot, self.product.prod_id)
         if isinstance(self.menu.state, PurchaseRequest):
-            self.menu.purchase(result)
+            self.menu.state.purchase(result, self.storage.product_name(self.product.prod_id))
         self.slot = None
         self.product = None

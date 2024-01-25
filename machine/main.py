@@ -1,7 +1,5 @@
 import requests
 
-from config import *
-import RPi.GPIO as GPIO
 from configuration import SERVER_URL, TOKEN
 from mqtt import start_mqtt
 from storage import Storage
@@ -26,8 +24,6 @@ def main():
         print('Failed to initialize storage')
         return
     print('Storage initialized')
-
-    
 
     setup(menu)
 

@@ -12,15 +12,15 @@
 			
 			<table>
 			<tr>
-				<th>transaction time</th>
-				<th>price</th>
-				<th>product</td>
+				<th class="col-3">Transaction time</th>
+				<th class="col-1">Price</th>
+				<th class="col-1">Product</th>
 			</tr>
 			{% for transaction in transactions %}
 			<tr>
 				<td>{{ transaction.transaction_time }}</td>
 				<td>{{ transaction.price }}</td>
-				<td>{{ transaction.product_fk.description }}</td>
+				<td>{{ transaction.product_fk.name }}</td>
 			</tr>
 			{% endfor %}
 			</table>
@@ -33,13 +33,13 @@
 			
 			<table>
 				<tr>
-					<th>id</th>
-					<th>active</th>
-					<th>funds</td>
+					<th class="col-2">Number</th>
+					<th class="col-1">Active</th>
+					<th class="col-1">Funds</th>
 				</tr>
 				{% for card in cards %}
 				<tr>
-					<td>{{ card.id }}</td>
+					<td>{{ card.card_nr }}</td>
 					<td>{{ card.active }}</td>
 					<td>{{ card.funds }}</td>
 				</tr>
