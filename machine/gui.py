@@ -21,11 +21,11 @@ if TYPE_CHECKING:
     import storage
     import transactions
 
-NUM_DISPLAY_PRODUCTS = 5
+NUM_DISPLAY_PRODUCTS = 6
 OLED_WIDTH = 96
 OLED_HEIGHT = 64
 
-TEXT_HEIGHT = 12
+TEXT_HEIGHT = 10
 DIM = 18
 
 # init fonts
@@ -99,7 +99,6 @@ class Menu:
         self._state.redButtonCallback()
 
     def displayMenu(self) -> None:
-        # disp.clear()
         self._state.displayMenu()
 
 
@@ -119,8 +118,11 @@ class Initial(State):
         buffer_image = Image.new("RGB", (disp.width, disp.height), "BLACK")
 
         draw = ImageDraw.Draw(buffer_image)
-        draw.text((0, TEXT_HEIGHT), "Green - Products", font=fontSmall)
-        draw.text((0, TEXT_HEIGHT * 2), "Red - Account Balance", font=fontSmall)
+        draw.text((0, TEXT_HEIGHT), "Green button:", font=fontSmall,  fill="green")
+        draw.text((0, TEXT_HEIGHT*2), "Products", font=fontSmall)
+        draw.text((0, TEXT_HEIGHT*3), "", font=fontSmall)
+        draw.text((0, TEXT_HEIGHT*4), "Red button:", font=fontSmall,  fill="red")
+        draw.text((0, TEXT_HEIGHT*5), "Account Balance", font=fontSmall)
         disp.ShowImage(buffer_image, 0, 0)
 
 
@@ -260,8 +262,6 @@ class PurchaseResult(State):
         else:
             draw.text((0, TEXT_HEIGHT), "Your purchase", font=fontSmall)
             draw.text((0, TEXT_HEIGHT * 2), "was unsuccessful", font=fontSmall)
-
-        # TODO maybe add other variants of purchase result
 
         disp.ShowImage(buffer_image, 0, 0)
 
