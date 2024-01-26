@@ -19,14 +19,16 @@ admin.site.unregister(User)
 @admin.register(User)
 class AppUserAdmin(UserAdmin):
     def get_form(self, request, obj=None, change=False, **kwargs):
-        form = super(UserAdmin, self).get_form(request, obj, **kwargs)
-        form.base_fields['date_joined'].disabled = True
+        form = super().get_form(request, obj, **kwargs)
         if not request.user.is_superuser:
-            form.base_fields['is_superuser'].disabled = True
-            form.base_fields['user_permissions'].disabled = True
+            if 'is_superuser' in form.base_fields:
+                form.base_fields['is_superuser'].disabled = True
+            if 'user_permissions' in form.base_fields:
+                form.base_fields['user_permissions'].disabled = True
             if obj is not None and obj.is_superuser:
                 for field in ('username', 'password', 'first_name', 'last_name', 'email', 'is_staff', 'is_active',
                               'groups', 'user_permissions', 'last_login', 'date_joined'):
+
                     form.base_fields[field].disabled = True
                 form.declared_fields['password'].help_text = ''
         return form
