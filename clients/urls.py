@@ -30,13 +30,13 @@ urlpatterns = [
     path('owners/clients/<int:product_id>/delete', views.clients_delete, name='client-delete'),
 
     path('owners/vmachines/', views.vmachines, name='vmachine-index'),
-    path('owners/vmachines/<int:vmachine_id>/edit/', views.vmachines_edit, name='vmachine-edit'),
+    path('owners/vmachines/<str:vmachine_id>/edit/', views.vmachines_edit, name='vmachine-edit'),
     path('owners/vmachines/add/', views.vmachines_add, name='vmachine-add'),
-    path('owners/vmachines/<int:vmachine_id>/delete/', views.vmachines_delete, name='vmachine-delete'),
+    path('owners/vmachines/<str:vmachine_id>/delete/', views.vmachines_delete, name='vmachine-delete'),
 
-    path('owners/vmachines/<int:vmachine_id>/slots/add', views.slots_add, name='slot-add'),
-    path('owners/vmachines/<int:vmachine_id>/slots/<int:slot_id>/edit', views.slots_edit, name='slot-edit'),
-    path('owners/vmachines/<int:vmachine_id>/slots/<int:slot_id>/delete', views.slots_delete, name='slot-delete'),
+    path('owners/vmachines/<str:vmachine_id>/slots/add', views.slots_add, name='slot-add'),
+    path('owners/vmachines/<str:vmachine_id>/slots/<int:slot_id>/edit', views.slots_edit, name='slot-edit'),
+    path('owners/vmachines/<str:vmachine_id>/slots/<int:slot_id>/delete', views.slots_delete, name='slot-delete'),
 
 ]
 

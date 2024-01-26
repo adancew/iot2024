@@ -44,7 +44,7 @@
                     {% for r in slots %}
                     <tr>
                         <td>{{ r.slot_number }}</td>
-                        <td>{{ r.product_fk.description }}</td>
+                        <td>{{ r.product_fk.name }}</td>
                         <td>{{ r.amount }}</td>
                         <td>
                             <a class="btn btn-outline-secondary m-1" href="../slots/{{ r.id }}/edit">Edytuj</a>

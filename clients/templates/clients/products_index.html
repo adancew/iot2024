@@ -19,7 +19,7 @@
             {% for r in products %}
             <tr>
                 <td>{{r.price}}</td>
-                <td>{{r.description}}</td>
+                <td>{{r.name}}</td>
                 <td>
                     <a class="btn btn-outline-secondary m-1" href="/owners/products/{{ r.id }}/edit">Edytuj</a>
                     <a class="btn btn-outline-danger m-1" href="/owners/products/{{ r.id }}/delete">Usuń</a>

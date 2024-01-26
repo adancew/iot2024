@@ -10,6 +10,7 @@
     <table class="table">
         <thead>
             <tr>
+                <td>ID</td>
                 <td>Adres</td>
                 <td>Opis</td>
                 <td>Token</td>
@@ -19,12 +20,13 @@
         <tbody>
             {% for r in vmachines %}
             <tr>
+                <td>{{r.identifier}}</td>
                 <td>{{r.address}}</td>
                 <td>{{r.description}}</td>
                 <td>{{r.token}}</td>
                 <td>
-                    <a class="btn btn-outline-secondary m-1" href="/owners/vmachines/{{ r.id }}/edit/">Szczegóły</a>
-                    <a class="btn btn-outline-danger m-1" href="/owners/vmachines/{{ r.id }}/delete">Usuń</a>
+                    <a class="btn btn-outline-secondary m-1" href="/owners/vmachines/{{ r.identifier }}/edit/">Szczegóły</a>
+                    <a class="btn btn-outline-danger m-1" href="/owners/vmachines/{{ r.identifier }}/delete">Usuń</a>
                 </td>
             </tr>
             {% endfor %}

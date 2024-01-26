@@ -14,7 +14,7 @@ class EnterCardForm(forms.Form):
 
 class EnterProductForm(forms.Form):
     price = forms.FloatField()
-    description = forms.CharField(max_length=65)
+    name = forms.CharField(max_length=65)
 
 class EnterClientForm(forms.Form):
     username = forms.CharField(max_length=65)
@@ -23,12 +23,13 @@ class EnterClientForm(forms.Form):
     email = forms.EmailField()
 
 class EnterVmachineForm(forms.Form):
+    identifier = forms.CharField()
     address = forms.CharField()
     description = forms.CharField()
-    token = forms.IntegerField()
+    token = forms.CharField()
 
 class EnterSlotForm(forms.Form):
-    product = forms.ChoiceField(choices=[(p.description, p.description) for p in Product.objects.all()]) 
+    product = forms.ChoiceField(choices=[(p.name, p.name) for p in Product.objects.all()]) 
     slot_number = forms.IntegerField()
     amount = forms.IntegerField()
 

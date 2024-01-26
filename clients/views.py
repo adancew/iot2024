@@ -44,14 +44,13 @@ def sign_out(request):
 @login_required
 def dash(request):
     if request.user.is_staff:
-        return redirect('/admin')
-    elif request.user.is_authenticated:
+        return render(request, 'clients/owner_dash.html')
+    else:
         user_cards = Card.objects.filter(user_fk=request.user.id)
         user_transactions = Transaction.objects.filter(user_fk=request.user.id)
         context = {"transactions": user_transactions, "cards": user_cards}
         return render(request, 'clients/user_dash.html', context)
-    else:
-        return render(request,'clients/empty_dash.html',{})
+    
     
 
 # MANAGING TRANSACTIONS
@@ -156,7 +155,7 @@ def products_add(request):
         if form.is_valid():
             new_product = Product(
                 price=form.cleaned_data['price'],
-                description=form.cleaned_data['description'],
+                name=form.cleaned_data['name'],
             )
             new_product.save()
            
@@ -176,12 +175,12 @@ def products_edit(request, product_id):
         form = EnterProductForm(request.POST, 
                              initial= {
                                  'price':product.price,
-                                 'description':product.description,
+                                 'name':product.name,
                                 })
        
         if form.is_valid():
             product.price=form.cleaned_data['price']
-            product.description=form.cleaned_data['description']
+            product.name=form.cleaned_data['name']
             product.save()
             messages.success(request, "edytowano produkt")
             return redirect('product-index')  
@@ -189,7 +188,7 @@ def products_edit(request, product_id):
     else:
         form = EnterProductForm(initial= {
                                 'price':product.price,
-                                'description':product.description,
+                                'name':product.name,
                                 })
         
     return render(request, 'clients/resource_edit.html', 
@@ -219,7 +218,7 @@ def products_delete(request, product_id):
 @user_passes_test(is_owner)
 def clients(request):
     return render(request,'clients/clients_index.html',
-                  {'clients':User.objects.filter(groups__name='Clients')})
+                  {'clients':User.objects.filter(is_staff=False)})
 
 @user_passes_test(is_owner)
 def clients_add(request):
@@ -233,8 +232,9 @@ def clients_add(request):
                 email=form.cleaned_data['email'], 
                 first_name=form.cleaned_data['first_name'],
                 last_name=form.cleaned_data['last_name'],
-                password="clientclient") # TODO find a way to handle defualt passwords
-            new_user.groups.add(Group.objects.get(name="Clients"))
+                password="clientclient",
+                is_staff=False) # TODO find a way to handle defualt passwords
+            #new_user.groups.add(Group.objects.get(name="Clients"))
             new_user.save()
             messages.success(request, "dodano nowego klienta")
             return redirect('client-add')      
@@ -305,17 +305,19 @@ def vmachines(request):
 
 @user_passes_test(is_owner)
 def vmachines_edit(request, vmachine_id):
-    vmachine = Vmachine.objects.get(id= vmachine_id)
+    vmachine = Vmachine.objects.get(identifier= vmachine_id)
     if request.method == 'POST':
 
         form = EnterVmachineForm(request.POST, 
                                initial= {
+                                 'identifier':vmachine.identifier,
                                  'address':vmachine.address,
                                  'description':vmachine.description,
                                  'token':vmachine.token,
                                 })
        
         if form.is_valid():
+            vmachine.identifier=form.cleaned_data['identifier']
             vmachine.address=form.cleaned_data['address']
             vmachine.description=form.cleaned_data['description']
             vmachine.save()
@@ -324,13 +326,14 @@ def vmachines_edit(request, vmachine_id):
            
     else:
         form = EnterVmachineForm(initial= {
+                                 'identifier':vmachine.identifier,
                                  'address':vmachine.address,
                                  'description':vmachine.description,
                                  'token':vmachine.token,
                                 })
         
     return render(request, 'clients/vmachine_edit.html', 
-                  {'form': form, 'slots':Slot.objects.filter(vmachine_fk=vmachine.id) })
+                  {'form': form, 'slots':Slot.objects.filter(vmachine_fk=vmachine.identifier) })
 
 @user_passes_test(is_owner)
 def vmachines_add(request):
@@ -339,6 +342,7 @@ def vmachines_add(request):
        
         if form.is_valid():
             vmachine=Vmachine(
+                identifier=form.cleaned_data['identifier'],
                 address=form.cleaned_data['address'],
                 description=form.cleaned_data['description'],
                 token=form.cleaned_data['token'],
@@ -359,7 +363,7 @@ def vmachines_delete(request, vmachine_id):
         form = DeleteForm(request.POST)
         if form.is_valid():
             try:
-                vmachine = Vmachine.objects.get(id=vmachine_id)
+                vmachine = Vmachine.objects.get(identifier=vmachine_id)
                 vmachine.delete()
                 messages.success(request, "Usuwanie zakończyło się sukcesem.")
             except:
@@ -370,13 +374,13 @@ def vmachines_delete(request, vmachine_id):
         form = DeleteForm()
 
     return render(request, 'clients/delete_confirm.html', 
-                  {'form': form, 'resource_name':"Automatu", 'resource_addr':'vmachines' })
+                  {'form': form, 'resource_name':"Automat", 'resource_addr':'vmachines' })
 
 
 # MANAGE SLOTS
 @user_passes_test(is_owner)
 def slots_add(request, vmachine_id):
-    vmachine = Vmachine.objects.get(id= vmachine_id)
+    vmachine = Vmachine.objects.get(identifier= vmachine_id)
     
     if request.method == 'POST':
 
@@ -384,8 +388,8 @@ def slots_add(request, vmachine_id):
        
         if form.is_valid():
             slot = Slot(
-                vmachine_fk = Vmachine.objects.get(id=vmachine_id),
-                product_fk = Product.objects.get(description=form.cleaned_data['product']),
+                vmachine_fk = Vmachine.objects.get(identifier=vmachine_id),
+                product_fk = Product.objects.get(name=form.cleaned_data['product']),
                 slot_number = form.cleaned_data['slot_number'],
                 amount = form.cleaned_data['amount'])
             slot.save()
@@ -399,13 +403,13 @@ def slots_add(request, vmachine_id):
                   {'form': form, 
                    'resource_addr':('vmachines/'+str(vmachine_id)+'/edit/'),
                    'resource_name':'slotu',
-                   'slots': Slot.objects.filter(vmachine_fk=vmachine.id),
+                   'slots': Slot.objects.filter(vmachine_fk=vmachine.identifier),
                    'products': Product.objects.all() })
 
 
 @user_passes_test(is_owner)
 def slots_edit(request, vmachine_id, slot_id):
-    vmachine = Vmachine.objects.get(id= vmachine_id)
+    vmachine = Vmachine.objects.get(identifier= vmachine_id)
     slot = Slot.objects.get(id= slot_id)
     
     if request.method == 'POST':
@@ -417,7 +421,7 @@ def slots_edit(request, vmachine_id, slot_id):
                                 })
        
         if form.is_valid():
-            slot.product_fk = Product.objects.get(description=form.cleaned_data['product'])
+            slot.product_fk = Product.objects.get(name=form.cleaned_data['product'])
             slot.amount = form.cleaned_data['amount']
             slot.save()
             messages.success(request, "edytowano slot")
@@ -433,7 +437,7 @@ def slots_edit(request, vmachine_id, slot_id):
                   {'form': form, 
                    'resource_addr':('vmachines/'+str(vmachine_id)+'/edit'),
                    'resource_name':'slotu',
-                   'slots': Slot.objects.filter(vmachine_fk=vmachine.id),
+                   'slots': Slot.objects.filter(vmachine_fk=vmachine.identifier),
                    'products': Product.objects.all() })
 
 

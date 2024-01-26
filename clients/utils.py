@@ -4,4 +4,5 @@ from django.core.exceptions import ObjectDoesNotExist
 
 
 def is_owner(user):
-    return user.groups.filter(name='Owners').exists()
+    #return user.groups.filter(name='Owners').exists()
+    return user.is_staff
