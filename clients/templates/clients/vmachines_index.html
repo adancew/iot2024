@@ -1,0 +1,34 @@
+{% extends 'clients/owners_base.html' %}
+
+{% block content %}
+
+<div class="container">
+
+    <span class="display-1 ">Automaty</span>
+    <a class="btn btn-outline-success m-3" style="width: 10rem" href="/owners/vmachines/add">Dodaj</a>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <td>Adres</td>
+                <td>Opis</td>
+                <td>Token</td>
+                <td>Akcje</td>
+            </tr>
+        </thead>
+        <tbody>
+            {% for r in vmachines %}
+            <tr>
+                <td>{{r.address}}</td>
+                <td>{{r.description}}</td>
+                <td>{{r.token}}</td>
+                <td>
+                    <a class="btn btn-outline-secondary m-1" href="/owners/vmachines/{{ r.id }}/edit/">Szczegóły</a>
+                    <a class="btn btn-outline-danger m-1" href="/owners/vmachines/{{ r.id }}/delete">Usuń</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock content %}

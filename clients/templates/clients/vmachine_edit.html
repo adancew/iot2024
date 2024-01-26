@@ -1,0 +1,61 @@
+{% extends 'clients/owners_base.html' %}
+
+{% block content %}
+
+<div class="container w-75 p-2 d-flex justify-content-center">
+
+    <div class="col ">
+        <div class="row">
+        <a class="btn btn-outline-secondary m-3" style="width:10rem" href="/owners/vmachines/">&larr; Powrót</a>
+        </div>
+        <div class="row">
+
+            <div class="col">
+                <h1>Edycja automatu</h1>
+
+                <form action="" method="post" class="py-4">
+                    {% csrf_token %}
+                    <table>
+                        {% for field in form %}
+                        <tr>
+                            <td>{{ field.errors }}
+                                {{ field.label_tag }}</td>
+                            <td>{{ field }}</td>
+                        </tr>
+                        {% endfor %}
+                    </table>
+                    <button class="btn btn-outline-secondary my-4" type="submit" value="Zatwierdz">Zatwierdź</button>
+                    <a class="btn btn-outline-secondary my-4" href="/owners/vmachines/">Anuluj</a>
+                </form>
+            </div>
+
+            <div class="col">
+                <h1>Wykaz slotów</h1>
+
+                <a class="btn btn-outline-success my-4" href="../slots/add" value="slots">Dodaj</a>
+
+                <table class="table">
+                    <tr>
+                        <td>Nr slotu</td>
+                        <td>Produkt</td>
+                        <td>Liczba</td>
+                        <td>Akcje</td>
+                    </tr>
+                    {% for r in slots %}
+                    <tr>
+                        <td>{{ r.slot_number }}</td>
+                        <td>{{ r.product_fk.description }}</td>
+                        <td>{{ r.amount }}</td>
+                        <td>
+                            <a class="btn btn-outline-secondary m-1" href="../slots/{{ r.id }}/edit">Edytuj</a>
+                            <a class="btn btn-outline-danger m-1" href="../slots/{{ r.id }}/delete">Usuń</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

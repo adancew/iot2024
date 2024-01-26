@@ -1,0 +1,40 @@
+{% extends 'clients/owners_base.html' %}
+
+{% block content %}
+
+<div class="container">
+
+    <span class="display-1 ">Klienci</span>
+    <a class="btn btn-outline-success m-3" style="width: 10rem" href="/owners/clients/add">Dodaj</a>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <td>Nazwa użytkownika</td>
+                <td>Adres email</td>
+                <td>Imię</td>
+                <td>Nazwisko</td>
+                <td>Akcje</td>
+            </tr>
+        </thead>
+        <tbody>
+            {% for r in clients %}
+            <tr>
+                <td>{{r.username}}</td>
+                <td>{{r.email}}</td>
+                <td>{{r.first_name}}</td>
+                <td>{{r.last_name}}</td>
+                <td>
+                    <a class="btn btn-outline-secondary m-1" href="/owners/clients/{{ r.id }}/edit">Edytuj</a>
+                    <a class="btn btn-outline-danger m-1" href="/owners/clients/{{ r.id }}/delete">Usuń</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+
+
+
+
+{% endblock content %}

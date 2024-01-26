@@ -6,6 +6,15 @@
 
 <div class="container">
 
+	<header class="p-4 ml-4">
+		{%if request.user.is_authenticated %}
+			<span class="col">{{ request.user.username | title }} | </span>
+			<a href="{% url 'logout' %}">Logout</a>
+		{%else%}
+			<a href="{% url 'login' %}">Login</a>
+		{%endif%}
+	</header>
+	
 	<div class="row">
 		<div class="col bg-light p-4 m-1 rounded" >
 			<h3 class="p-2 m-2">My transaction history</h3>

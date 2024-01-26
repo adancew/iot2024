@@ -1,0 +1,36 @@
+{% extends 'clients/owners_base.html' %}
+
+{% block content %}
+
+<div class="container">
+
+    <span class="display-1 ">Transakcje</span>
+    
+    <table class="table">
+        <thead>
+            <tr>
+                <td>Czas</td>
+                <td>Klient</td>
+                <td>Produkt</td>
+                <td>Cena</td>
+                <td>Automat</td>
+            </tr>
+        </thead>
+        <tbody>
+            {% for r in transactions %}
+            <tr>
+                <td>{{r.transaction_time}}</td>
+                <td>{{r.user_fk}}</td>
+                <td>{{r.product_fk}}</td>
+                <td>{{r.price}}</td>
+                <td>{{r.vmachine_fk}}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+
+
+
+
+{% endblock content %}

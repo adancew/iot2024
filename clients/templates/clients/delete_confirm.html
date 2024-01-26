@@ -1,0 +1,22 @@
+{% extends 'clients/owners_base.html' %}
+
+{% block content %}
+
+
+<div class="container p-2">
+
+    <a class="btn btn-outline-secondary m-3" href="/owners/{{resource_addr}}/">&larr; Powrót</a>
+
+    <h1>Czy na pewno chcesz usunąć {{resource_name}}?</h1>
+
+    <form action="" method="post" class="py-4">
+        {% csrf_token %}
+        {{ form }}
+        <button class="btn btn-outline-success m-4" style="width: 10rem;" type="submit" 
+            value="Zatwierdz">Tak</button>
+        <a class="btn btn-outline-danger m-4" style="width: 10rem;" href="/owners/{{resource_addr}}">Nie</a>
+    </form>
+
+</div>
+
+{% endblock %}

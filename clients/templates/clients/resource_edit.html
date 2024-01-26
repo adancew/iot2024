@@ -1,0 +1,29 @@
+{% extends 'clients/owners_base.html' %}
+
+{% block content %}
+
+
+<div class="container p-2">
+
+    <a class="btn btn-outline-secondary m-3" href="/owners/{{resource_addr}}/">&larr; Powrót</a>
+
+    <h1>Edycja {{resource_name}}</h1>
+
+    <form action="" method="post" class="py-4">
+        {% csrf_token %}
+        <table>
+            {% for field in form %}
+            <tr>
+                <td>{{ field.errors }}
+                {{ field.label_tag }}</td>
+                <td>{{ field }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        <button class="btn btn-outline-secondary my-4" type="submit" value="Zatwierdz">Zatwierdź</button>
+        <a class="btn btn-outline-secondary my-4" href="/owners/{{resource_addr}}/">Anuluj</a>
+    </form>
+
+</div>
+
+{% endblock %}

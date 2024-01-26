@@ -1,0 +1,40 @@
+{% extends 'clients/owners_base.html' %}
+
+{% block content %}
+
+<div class="container">
+
+    <span class="display-1 ">Karty</span>
+    <a class="btn btn-outline-success m-3" style="width: 10rem" href="/owners/cards/add">Dodaj</a>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <td>Cena</td>
+                <td>Opis</td>
+                <td>Czy Aktywna</td>
+                <td>Fundusze</td>
+                <td>Akcje</td>
+            </tr>
+        </thead>
+        <tbody>
+            {% for r in cards %}
+            <tr>
+                <td>{{r.card_nr}}</td>
+                <td>{{r.user_fk}}</td>
+                <td>{{r.active}}</td>
+                <td>{{r.funds}}</td>
+                <td>
+                    <a class="btn btn-outline-secondary m-1" href="/owners/cards/{{ r.id }}/edit">Edytuj</a>
+                    <a class="btn btn-outline-danger m-1" href="/owners/cards/{{ r.id }}/delete">Usuń</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+
+
+
+
+{% endblock content %}
