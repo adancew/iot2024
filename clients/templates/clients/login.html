@@ -2,15 +2,21 @@
 
 {% block content %}
 
-<div class="container p-4">
+<div class="container p-4 d-flex justify-content-center">
+	<form class="bg-light p-4 m-4" method="POST" novalidate>
+		{% csrf_token %}
+		<h2>Zaloguj jako klient/właściciel</h2>
+		{{form.as_p}}
+		<input type="submit" value="Zaloguj" />
+	</form>
 
-<form method="POST" novalidate>
-	{% csrf_token %}
-	<h2>Login</h2>
-	{{form.as_p}}
-	<input type="submit" value="Login" />
-</form>
-
+	<form class="bg-light p-4 m-4" action="/admin">
+		<h2>Zaloguj jako administrator</h2>
+		<input type="submit" value="Zaloguj" />
+	</form>
 </div>
+
+
+
 
 {% endblock content %}

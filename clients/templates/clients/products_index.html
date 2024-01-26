@@ -1,0 +1,36 @@
+{% extends 'clients/owners_base.html' %}
+
+{% block content %}
+
+<div class="container">
+
+    <span class="display-1 ">Produkty</span>
+    <a class="btn btn-outline-success m-3" style="width: 10rem" href="/owners/products/add">Dodaj</a>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <td>Cena</td>
+                <td>Nazwa</td>
+                <td>Akcje</td>
+            </tr>
+        </thead>
+        <tbody>
+            {% for r in products %}
+            <tr>
+                <td>{{r.price}}</td>
+                <td>{{r.description}}</td>
+                <td>
+                    <a class="btn btn-outline-secondary m-1" href="/owners/products/{{ r.id }}/edit">Edytuj</a>
+                    <a class="btn btn-outline-danger m-1" href="/owners/products/{{ r.id }}/delete">Usuń</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+
+
+
+
+{% endblock content %}

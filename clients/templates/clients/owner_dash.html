@@ -1,25 +1,28 @@
-{% extends 'clients/base.html' %}
-	
+{% extends 'clients/owners_base.html' %}
+
 {% block content %}
 
-{% load get_group %}
+<div class="container d-flex justify-content-center">
 
-<div class="container">
+    <div class="row w-50 ">
+        <div class="col bg-light p-4 m-4 rounded">
+            <h2 class="col m-3">Panel zarządzania</h2>
 
-<h1 class="p-4 m-1" >Owner dashboard</h1>
+            <h4 class="col m-3"> <a href="/owners/products">Produkty</a>
+                | <a href="/owners/products/add">Nowy produkt</a></h4>
 
-<div class="row" tp-4>
-    <div class="col bg-light p-4 m-1 rounded" >
-        <h4 class="col m-3">manage <a href="">products</a></h4>
-        <h4 class="col m-3">manage <a href="">vending machines</a></h4>
+            <h4 class="col m-3"> <a href="/owners/vmachines">Automaty</a>
+                | <a href="/owners/vmachines/add">Nowy automat</a></h4>
+
+            <h4 class="col m-3"> <a href="/owners/clients">Klienci</a>
+                | <a href="/owners/clients/add">Nowy klient</a></h4>
+
+            <h4 class="col m-3"> <a href="/owners/cards">Karty</a>
+                | <a href="/owners/cards/add">Nowa karta</a></h4>
+
+            <h4 class="col m-3"> <a href="/owners/transactions/">Transakcje</a></h4>
+        </div>
     </div>
-
-    <div class="col bg-light p-4 m-1 rounded">
-        <h4 class="col m-3">manage <a href="">clients</a> | <a href="">new client</a></h4>
-        <h4 class="col m-3">manage <a href="">cards</a> | <a href="">new card</a></h4>
-        <h4 class="col m-3">manage <a href="">transactions</a></h4>
-    </div>
-</div>
 </div>
 
 

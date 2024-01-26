@@ -11,7 +11,6 @@ class Product(models.Model):
     def __str__(self):
         return f"Product {self.id}: {self.name}"
 
-
 class Vmachine(models.Model):
     identifier = models.CharField(max_length=255, primary_key=True, blank=False)
     address = models.CharField(max_length=255, null=False)
@@ -42,6 +41,7 @@ class Card(models.Model):
     id = models.AutoField(primary_key=True)
     card_nr = models.CharField(max_length=255, null=False, unique=True, verbose_name='card number')
     user_fk = models.ForeignKey(User, on_delete=models.CASCADE, null=False, verbose_name='user')
+
     active = models.BooleanField(default=False)
     funds = models.DecimalField(max_digits=10, decimal_places=2, null=False)
 
