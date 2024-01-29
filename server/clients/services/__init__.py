@@ -1,6 +1,6 @@
 from paho.mqtt import client as mqtt
 
-from vending.settings import BROKER_IP
+from settings import BROKER_IP
 from .machines import MachineService
 from .mqtt_communicator import MQTTCommunicator
 from .products import ProductService
