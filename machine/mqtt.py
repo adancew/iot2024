@@ -54,6 +54,8 @@ class MQTTCommunicator:
                 result = Result(int(result))
                 if result == Result.OK:
                     balance = float(balance)
+                else:
+                    balance = 0.0
             except ValueError:
                 pass
             else:

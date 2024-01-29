@@ -1,4 +1,4 @@
-DEPLOY = False
+DEPLOY = True
 MACHINE_1 = True
 
 if DEPLOY:
